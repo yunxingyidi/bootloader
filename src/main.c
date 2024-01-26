@@ -4,6 +4,7 @@
 
 #define CORE_CLK_KHZ 33000
 #define UART_CTRL UART_CTRL_ADDR
+//TODO the size of the payload
 #define UART_READ_SIZE 0
 #define SPI_READ_ADDR 0
 #define SPI_READ_SIZE 0
@@ -36,7 +37,7 @@ void useUart()
     unsigned int peripheral_input_khz;
     peripheral_input_khz = CORE_CLK_KHZ; 
     init_uart(peripheral_input_khz);
-    uart_read(UART_READ_SIZE, (void*)MEMORY_MEM_ADDR, UART_CTRL);
+    uart_read(UART_CTRL);
 }
 
 void useSPI()

@@ -3,7 +3,7 @@
 
 /* Register offsets */
 #define UART_REG_TXFIFO         0x00
-#define UART_REG_RXFIFO         0x04
+#define UART_REG_RXFIFO         0x00
 #define UART_REG_TXCTRL         0x08
 #define UART_REG_RXCTRL         0x0c
 #define UART_REG_IE             0x10
@@ -22,6 +22,8 @@
 /* IP register */
 #define UART_IP_TXWM            0x1
 #define UART_IP_RXWM            0x2
+#define UART_START_FRAME        0Xff
+#define UART_ADDR_SIZE          4
 
 
 #ifndef __ASSEMBLER__
@@ -30,6 +32,19 @@
 int puts(const char *s);
 
 #include <stdint.h>
+#include <stdlib.h>
+#include <malloc.h>
+
+typedef struct Page{
+  int segnum;
+}uartPage;
+
+typedef struct node{
+  uint32_t addr;
+  uint32_t segsize;
+}uartSeg;
+
+ 
 /**
  * Get smallest clock divisor that divides input_hz to a quotient less than or
  * equal to max_target_hz;
