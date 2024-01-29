@@ -5,9 +5,9 @@
 #define CORE_CLK_KHZ 33000
 #define UART_CTRL UART_CTRL_ADDR
 //TODO the size of the payload
-#define UART_READ_SIZE 0
-#define SPI_READ_ADDR 0
-#define SPI_READ_SIZE 0
+// #define UART_READ_SIZE 0
+// #define SPI_READ_ADDR 0
+// #define SPI_READ_SIZE 0
 
 void handle_trap(void)
 {
@@ -32,19 +32,20 @@ void init_uart(unsigned int peripheral_input_khz)
   UART_REG(UART_REG_DIV) = uart_min_clk_divisor(peripheral_input_khz * 1000ULL, uart_target_hz);
 }
 
-void useUart()
+void bootByUart()
 {
     unsigned int peripheral_input_khz;
     peripheral_input_khz = CORE_CLK_KHZ; 
     init_uart(peripheral_input_khz);
-    uart_read(UART_CTRL);
+    uartRead(UART_CTRL);
 }
 
-void useSPI()
+void bootBySPI()
 {
-    spi_ctrl* spictrl = (void*) 0;
-    spictrl = (spi_ctrl*) SPI_CTRL_ADDR;
-    spi_copy(spictrl, (void*)MEMORY_MEM_ADDR, (void*)SPI_READ_ADDR, SPI_READ_SIZE);
+    // spi_ctrl* spictrl = (void*) 0;
+    // spictrl = (spi_ctrl*) SPI_CTRL_ADDR;
+    // spi_copy(spictrl, (void*)MEMORY_MEM_ADDR, (void*)SPI_READ_ADDR, SPI_READ_SIZE);
+    spi_read();
 }
 
 int main()
@@ -53,20 +54,21 @@ int main()
 
     switch (mode_select)
     {
-    case 0:
+    case BOOT_DIRECT:
         jumpToSRAM();
         break;
-    case 1:
-        useUart();
-    case 2:
-        useSPI();
+    case BOOT_UART:
+        bootByUart();
+    case BOOT_SPI:
+        bootBySPI();
     default:
         ux00boot_fail(0x1, 0);
         break;
     }
-    write_mtvec(MEMORY_MEM_ADDR);
-    asm volatile (
-        "unimp"
-    );
+    // write_mtvec(MEMORY_MEM_ADDR);
+    // asm volatile (
+    //     "unimp"
+    // );
+    jumpToSRAM();
     return 0;
 }

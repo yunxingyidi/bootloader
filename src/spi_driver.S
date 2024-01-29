@@ -1,3 +1,5 @@
+
+.global spi_read
 .section .text
 spi_read:
 

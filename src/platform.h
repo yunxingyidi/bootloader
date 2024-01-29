@@ -20,12 +20,14 @@
 //the address of Model_Select
 #define MODESELECT_MEM_ADDR _AC(0x1000,UL)
 #define MEMORY_MEM_ADDR _AC(0x80000000,UL)
-#define SPI_CTRL_ADDR _AC(0x10040000,UL)
-#define SPI_CTRL_SIZE _AC(0x1000,UL)
-#define SPI_MEM_ADDR _AC(0x20000000,UL)
-#define SPI_MEM_SIZE _AC(0x10000000,UL)
+// #define SPI_CTRL_ADDR _AC(0x10040000,UL)
+// #define SPI_CTRL_SIZE _AC(0x1000,UL)
+// #define SPI_MEM_ADDR _AC(0x20000000,UL)
+// #define SPI_MEM_SIZE _AC(0x10000000,UL)
 #define UART_CTRL_ADDR _AC(0x60000000,UL)
 #define UART_REG(offset) _REG32(UART_CTRL_ADDR, offset)
-#define DMA_REG(offset) _REG32(DMA_CTRL_ADDR, offset)
 
+#define BOOT_DIRECT 0
+#define BOOT_UART 1
+#define BOOT_SPI 2
 #endif

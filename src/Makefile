@@ -16,8 +16,8 @@ H=$(wildcard *.h */*.h)
 BIN=bootloader.bin 
 ELF=bootloader.elf 
 ASM=bootloader.asm 
-all: $(BIN)
-
+all: $(BIN) clean
+ 
 elf: $(ELF)
 
 asm: $(ASM)
@@ -25,7 +25,7 @@ asm: $(ASM)
 ux00boot.o: ux00boot.c
 	$(CC) $(CFLAGS) -c -o $@ $^
 
-bootloader.elf: start.o main.o $(LIB_BOOT_O) ux00boot.o bootloader.lds
+bootloader.elf: start.o main.o spi_driver.o $(LIB_BOOT_O) ux00boot.o bootloader.lds
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(filter %.o,$^) -T$(filter %.lds,$^)
 
 %.bin: %.elf
@@ -41,5 +41,5 @@ bootloader.elf: start.o main.o $(LIB_BOOT_O) ux00boot.o bootloader.lds
 %.o: %.c $(H)
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-clean::
-	rm -f */*.o */*.dtb $(BIN) $(ELF) $(ASM)
+clean:
+	rm -f */*.o */*.dtb *.o

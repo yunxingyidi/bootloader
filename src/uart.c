@@ -67,29 +67,6 @@ void createUartPage(void* uartctrl, uartPage* p)
 }
 /**
  * @Author: zhang
- * @Description: Read and store the different segment 
- * which has different size of the executable file into different address
- */
-void uartRead(void* uartctrl)
-{
-  char val;
-  val = uart_getc(uartctrl);
-  while(val != UART_START_FRAME) {
-    val = uart_getc(uartctrl);
-  }
-  uartPage page;
-  uartPage *p = &page;
-  createUartPage(uartctrl, p);
-  for(int i = 0; i < page.segnum; i++) {
-    while(val != UART_START_FRAME) {
-      val = uart_getc(uartctrl);
-    }
-    uartSeg *s = getinformation(uartctrl);
-    getdata(uartctrl, s);
-  }
-}
-/**
- * @Author: zhang
  * @Description: Get the attribute of the each segment
  */
 uartSeg* getinformation(void* uartctrl)
@@ -127,3 +104,27 @@ void getdata(void* uartctrl, uartSeg* s)
 }
 
 
+
+/**
+ * @Author: zhang
+ * @Description: Read and store the different segment 
+ * which has different size of the executable file into different address
+ */
+void uartRead(void* uartctrl)
+{
+  char val;
+  val = uart_getc(uartctrl);
+  while(val != UART_START_FRAME) {
+    val = uart_getc(uartctrl);
+  }
+  uartPage page;
+  uartPage *p = &page;
+  createUartPage(uartctrl, p);
+  for(int i = 0; i < page.segnum; i++) {
+    while(val != UART_START_FRAME) {
+      val = uart_getc(uartctrl);
+    }
+    uartSeg *s = getinformation(uartctrl);
+    getdata(uartctrl, s);
+  }
+}
